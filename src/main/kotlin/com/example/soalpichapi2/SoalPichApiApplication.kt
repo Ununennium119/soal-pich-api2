@@ -4,8 +4,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class SoalPichApi2Application
+class SoalPichApiApplication
 
 fun main(args: Array<String>) {
-    runApplication<SoalPichApi2Application>(*args)
+    runApplication<SoalPichApiApplication>(*args)
 }
