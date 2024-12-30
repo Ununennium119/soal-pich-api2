@@ -1,9 +1,9 @@
 package com.example.soalpichapi2.controller
 
-import com.example.soalpichapi2.dto.UserDto
-import com.example.soalpichapi2.dto.request.LoginRequest
-import com.example.soalpichapi2.dto.request.RegisterRequest
-import com.example.soalpichapi2.dto.response.LoginResponse
+import com.example.soalpichapi2.dto.user.UserDto
+import com.example.soalpichapi2.dto.auth.LoginRequest
+import com.example.soalpichapi2.dto.auth.RegisterRequest
+import com.example.soalpichapi2.dto.auth.LoginResponse
 import com.example.soalpichapi2.service.AuthenticationService
 import com.example.soalpichapi2.service.JwtService
 import jakarta.validation.Valid

@@ -1,4 +1,4 @@
-package com.example.soalpichapi2.dto
+package com.example.soalpichapi2.dto.user
 
 import com.example.soalpichapi2.enumeration.UserRole
 import com.fasterxml.jackson.annotation.JsonIgnore
@@ -17,7 +17,7 @@ class UserDto(
     val modifiedDate: LocalDateTime? = null
 ) : UserDetails {
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
-        return mutableListOf(SimpleGrantedAuthority(role.toString()))
+        return mutableListOf(SimpleGrantedAuthority(role.getAuthority()))
     }
 
     @JsonIgnore

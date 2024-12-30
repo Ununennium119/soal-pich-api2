@@ -72,7 +72,6 @@ class JwtService(
     }
 
     private fun getSignInKey(): SecretKey {
-        print(java.util.Base64.getEncoder().encodeToString(Jwts.SIG.HS256.key().build().encoded))
         val keyBytes = Decoders.BASE64.decode(secretKey)
         return Keys.hmacShaKeyFor(keyBytes)
     }

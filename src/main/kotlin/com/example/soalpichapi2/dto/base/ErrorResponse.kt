@@ -1,4 +1,4 @@
-package com.example.soalpichapi2.dto.response
+package com.example.soalpichapi2.dto.base
 
 data class ErrorResponse(
     val message: String,

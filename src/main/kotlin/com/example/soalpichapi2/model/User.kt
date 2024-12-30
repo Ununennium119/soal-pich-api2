@@ -1,6 +1,6 @@
 package com.example.soalpichapi2.model
 
-import com.example.soalpichapi2.dto.UserDto
+import com.example.soalpichapi2.dto.user.UserDto
 import com.example.soalpichapi2.enumeration.UserRole
 import jakarta.persistence.*
 

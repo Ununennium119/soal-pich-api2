@@ -1,7 +1,7 @@
 package com.example.soalpichapi2.controller
 
-import com.example.soalpichapi2.dto.response.ErrorResponse
-import com.example.soalpichapi2.dto.response.ValidationError
+import com.example.soalpichapi2.dto.base.ErrorResponse
+import com.example.soalpichapi2.dto.base.ValidationError
 import com.example.soalpichapi2.exception.ValidationException
 import org.springframework.context.MessageSource
 import org.springframework.http.HttpStatus
