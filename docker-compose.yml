@@ -1,0 +1,21 @@
+version: '3.9'
+
+name: soal_pich
+
+volumes:
+  db:
+    driver: local
+
+services:
+  postgresql:
+    image: postgres:latest
+    container_name: soal_pich_postgresql
+    ports:
+      - "5432:5432"
+    volumes:
+      - "db:/var/lib/postgresql/data"
+    restart: always
+    environment:
+      - POSTGRES_DB=soal_pich
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
