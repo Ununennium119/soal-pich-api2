@@ -11,13 +11,11 @@ import java.time.LocalDateTime
 class UserDto(
     val id: Long,
     private val username: String,
-    @JsonIgnore
     private val password: String,
     val role: UserRole,
     val createdDate: LocalDateTime? = null,
     val modifiedDate: LocalDateTime? = null
 ) : UserDetails {
-    @JsonIgnore
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
         return mutableListOf(SimpleGrantedAuthority(role.toString()))
     }
@@ -27,7 +25,6 @@ class UserDto(
         return password
     }
 
-    @JsonIgnore
     override fun getUsername(): String {
         return username
     }

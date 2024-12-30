@@ -9,6 +9,7 @@ import com.example.soalpichapi2.service.JwtService
 import jakarta.validation.Valid
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -44,5 +45,14 @@ class AuthenticationController(
     fun register(@Valid @RequestBody request: RegisterRequest): ResponseEntity<UserDto> {
         val user = authenticationService.register(request)
         return ResponseEntity.ok(user)
+    }
+
+    @GetMapping(
+        "/current-user",
+        produces = [MediaType.APPLICATION_JSON_VALUE],
+    )
+    fun currentUser(): ResponseEntity<UserDto> {
+        val currentUser = authenticationService.getCurrentUser()
+        return ResponseEntity.ok(currentUser)
     }
 }

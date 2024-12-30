@@ -8,6 +8,7 @@ import com.example.soalpichapi2.model.User
 import com.example.soalpichapi2.repository.UserRepository
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
@@ -42,5 +43,15 @@ class AuthenticationService(
         )
         return userRepository.findByUsername(request.username)?.toDto()
             ?: throw UsernameNotFoundException("")
+    }
+
+    fun getCurrentUser(): UserDto? {
+        val authentication = SecurityContextHolder.getContext().authentication
+        val currentUser = try {
+            authentication.principal as UserDto
+        } catch (e: Exception) {
+            null
+        }
+        return currentUser
     }
 }
