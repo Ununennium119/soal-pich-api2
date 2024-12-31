@@ -1,7 +1,9 @@
 package com.example.soalpichapi2.model
 
 import jakarta.persistence.*
+import org.springframework.data.annotation.CreatedBy
 import org.springframework.data.annotation.CreatedDate
+import org.springframework.data.annotation.LastModifiedBy
 import org.springframework.data.annotation.LastModifiedDate
 import org.springframework.data.jpa.domain.support.AuditingEntityListener
 import java.time.LocalDateTime
@@ -21,4 +23,12 @@ abstract class BaseModel {
     @LastModifiedDate
     @Column(nullable = false)
     protected var modifiedDate: LocalDateTime? = null
+
+    @CreatedBy
+    @Column(nullable = false, updatable = false)
+    var createdBy: String? = null
+
+    @LastModifiedBy
+    @Column(nullable = false)
+    var modifiedBy: String? = null
 }
