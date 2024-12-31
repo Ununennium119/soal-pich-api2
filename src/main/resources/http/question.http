@@ -1,0 +1,64 @@
+### Login
+POST http://localhost:8080/api/auth/login
+Content-Type: application/json
+Accept: application/json
+
+{
+  "username": "designer",
+  "password": "password"
+}
+
+> {% client.global.set("token", response.body.token) %}
+
+### Create
+POST http://localhost:8080/api/questions
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{token}}
+
+{
+  "title": "Forth Question",
+  "question": "My forth test question?",
+  "option1": "First Option",
+  "option2": "Second Option",
+  "option3": "Third Option",
+  "option4": "Forth Option",
+  "answer": 1,
+  "category": 2,
+  "difficulty": "NORMAL",
+  "relatedQuestions": [1, 2, 3]
+}
+
+### Get
+GET http://localhost:8080/api/questions/3
+Accept: application/json
+Authorization: Bearer {{token}}
+
+### Update
+PUT http://localhost:8080/api/questions/3
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{token}}
+
+{
+  "title": "Updated Third Question",
+  "question": "My third test question?",
+  "option1": "First Option",
+  "option2": "Second Option",
+  "option3": "Third Option",
+  "option4": "Forth Option",
+  "answer": 4,
+  "category": 2,
+  "difficulty": "HARD",
+  "relatedQuestions": [1, 2, 4]
+}
+
+### Delete
+DELETE http://localhost:8080/api/questions/3
+Accept: application/json
+Authorization: Bearer {{token}}
+
+### List
+GET http://localhost:8080/api/questions?page=0&pageSize=2&order=title&direction=ASC
+Accept: application/json
+Authorization: Bearer {{token}}

@@ -4,6 +4,7 @@ import com.example.soalpichapi2.service.JwtService
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
+import org.springframework.http.HttpStatus
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.UserDetailsService
@@ -48,7 +49,7 @@ class JwtAuthenticationFilter(
 
             filterChain.doFilter(request, response)
         } catch (exception: Exception) {
-            handlerExceptionResolver.resolveException(request, response, null, exception)
+            response.status = HttpStatus.UNAUTHORIZED.value()
         }
     }
 }
