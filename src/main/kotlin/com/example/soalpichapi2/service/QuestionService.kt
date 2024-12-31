@@ -1,9 +1,12 @@
 package com.example.soalpichapi2.service
 
+import com.example.soalpichapi2.dto.question.QuestionAnswerDto
+import com.example.soalpichapi2.dto.question.QuestionAnswerRequest
 import com.example.soalpichapi2.dto.question.QuestionCreateUpdateRequest
 import com.example.soalpichapi2.dto.question.QuestionDto
 import com.example.soalpichapi2.exception.ValidationException
 import com.example.soalpichapi2.model.Question
+import com.example.soalpichapi2.model.QuestionAnswer
 import com.example.soalpichapi2.repository.CategoryRepository
 import com.example.soalpichapi2.repository.QuestionAnswerRepository
 import com.example.soalpichapi2.repository.QuestionRepository
@@ -97,15 +100,35 @@ class QuestionService(
         val answeredQuestions = questionAnswerRepository.findAllAnsweredQuestions(username)
         val notAnsweredQuestions = questionRepository.findAllQuestionsByCategoryAndNotIn(
             category,
-            answeredQuestions.map { it.toDto().id }
+            answeredQuestions.map { it.toDto().question.id }
         )
 
         if (notAnsweredQuestions.isEmpty()) return null
         return notAnsweredQuestions.random().toDto()
     }
 
-    fun answer(): QuestionDto? {
-        // TODO: Implement answering question
-        return null
+    fun answer(id: Long, request: QuestionAnswerRequest): QuestionAnswerDto? {
+        val question = questionRepository.findByIdOrNull(id)
+            ?: return null
+
+        val user = authenticationService.getCurrentUser()!!
+        if (questionAnswerRepository.existsByQuestionAndCreatedBy(question, user.username)) {
+            throw ValidationException("question.alreadyAnswered")
+        }
+
+        val questionDto = question.toDto()
+        val score = if (request.answer == questionDto.answer) {
+            questionDto.difficulty.score
+        } else {
+            0
+        }
+
+        val questionAnswer = QuestionAnswer(
+            question = question,
+            answer = request.answer,
+            score = score,
+        )
+        val createdQuestionAnswer = questionAnswerRepository.save(questionAnswer)
+        return createdQuestionAnswer.toDto()
     }
 }

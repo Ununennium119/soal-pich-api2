@@ -67,3 +67,13 @@ Authorization: Bearer {{token}}
 GET http://localhost:8080/api/questions/random?category=1
 Accept: application/json
 Authorization: Bearer {{token}}
+
+### Answer
+POST http://localhost:8080/api/questions/3/answer
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{token}}
+
+{
+  "answer": 1
+}

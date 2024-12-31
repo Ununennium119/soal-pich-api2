@@ -1,5 +1,7 @@
 package com.example.soalpichapi2.controller
 
+import com.example.soalpichapi2.dto.question.QuestionAnswerDto
+import com.example.soalpichapi2.dto.question.QuestionAnswerRequest
 import com.example.soalpichapi2.dto.question.QuestionCreateUpdateRequest
 import com.example.soalpichapi2.dto.question.QuestionDto
 import com.example.soalpichapi2.enumeration.UserRole
@@ -109,6 +111,22 @@ class QuestionController(
     )
     fun random(@RequestParam(required = false) category: Long? = null): ResponseEntity<QuestionDto> {
         val question = questionService.getRandomUnansweredQuestion(category)
+        return question?.let {
+            ResponseEntity.ok(it)
+        } ?: ResponseEntity.notFound().build()
+    }
+
+    @RolesAllowed(UserRole.PLAYER_VALUE)
+    @PostMapping(
+        "/{id}/answer",
+        consumes = [MediaType.APPLICATION_JSON_VALUE],
+        produces = [MediaType.APPLICATION_JSON_VALUE],
+    )
+    fun answer(
+        @PathVariable id: Long,
+        @Valid @RequestBody request: QuestionAnswerRequest,
+    ): ResponseEntity<QuestionAnswerDto> {
+        val question = questionService.answer(id, request)
         return question?.let {
             ResponseEntity.ok(it)
         } ?: ResponseEntity.notFound().build()
