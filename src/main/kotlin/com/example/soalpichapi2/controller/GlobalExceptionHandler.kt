@@ -3,6 +3,7 @@ package com.example.soalpichapi2.controller
 import com.example.soalpichapi2.dto.base.ErrorResponse
 import com.example.soalpichapi2.dto.base.ValidationError
 import com.example.soalpichapi2.exception.ValidationException
+import mu.KotlinLogging
 import org.springframework.context.MessageSource
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -12,10 +13,11 @@ import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.ResponseStatus
 import java.util.*
-import kotlin.collections.ArrayList
 
 @ControllerAdvice
 class GlobalExceptionHandler(private val messageSource: MessageSource) {
+
+    private val logger = KotlinLogging.logger {}
 
     @ExceptionHandler(HttpMessageNotReadableException::class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -52,6 +54,7 @@ class GlobalExceptionHandler(private val messageSource: MessageSource) {
     @ExceptionHandler(Exception::class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     fun handleGeneralException(ex: Exception): ResponseEntity<ErrorResponse> {
+        logger.error(ex) { "Uncaught exception" }
         val errorResponse = ErrorResponse(
             message = ex.message ?: getMessage("error.server-error")!!,
             errors = listOf(),
