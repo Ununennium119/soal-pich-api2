@@ -62,3 +62,8 @@ Authorization: Bearer {{token}}
 GET http://localhost:8080/api/questions?page=0&pageSize=2&order=title&direction=ASC
 Accept: application/json
 Authorization: Bearer {{token}}
+
+### Random
+GET http://localhost:8080/api/questions/random?category=1
+Accept: application/json
+Authorization: Bearer {{token}}

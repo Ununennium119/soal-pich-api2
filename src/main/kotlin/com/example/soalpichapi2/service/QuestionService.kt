@@ -3,9 +3,9 @@ package com.example.soalpichapi2.service
 import com.example.soalpichapi2.dto.question.QuestionCreateUpdateRequest
 import com.example.soalpichapi2.dto.question.QuestionDto
 import com.example.soalpichapi2.exception.ValidationException
-import com.example.soalpichapi2.model.Category
 import com.example.soalpichapi2.model.Question
 import com.example.soalpichapi2.repository.CategoryRepository
+import com.example.soalpichapi2.repository.QuestionAnswerRepository
 import com.example.soalpichapi2.repository.QuestionRepository
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional
 class QuestionService(
     private val categoryRepository: CategoryRepository,
     private val questionRepository: QuestionRepository,
+    private val questionAnswerRepository: QuestionAnswerRepository,
     private val authenticationService: AuthenticationService,
 ) {
 
@@ -68,7 +69,7 @@ class QuestionService(
         val question = questionRepository.findByIdOrNull(id)
             ?: return false
 
-        val questionsRelatedTo = questionRepository.findQuestionsRelatedTo(question)
+        val questionsRelatedTo = questionRepository.findAllQuestionsRelatedTo(question)
         questionsRelatedTo.forEach {
             it.removeRelatedQuestion(question)
         }
@@ -92,9 +93,15 @@ class QuestionService(
                 ?: throw ValidationException("question.category.notFound")
         }
 
-        // TODO: Get random unanswered question
+        val username = authenticationService.getCurrentUser()!!.username
+        val answeredQuestions = questionAnswerRepository.findAllAnsweredQuestions(username)
+        val notAnsweredQuestions = questionRepository.findAllQuestionsByCategoryAndNotIn(
+            category,
+            answeredQuestions.map { it.toDto().id }
+        )
 
-        return null
+        if (notAnsweredQuestions.isEmpty()) return null
+        return notAnsweredQuestions.random().toDto()
     }
 
     fun answer(): QuestionDto? {
