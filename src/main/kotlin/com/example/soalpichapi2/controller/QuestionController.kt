@@ -5,6 +5,7 @@ import com.example.soalpichapi2.dto.question.QuestionAnswerRequest
 import com.example.soalpichapi2.dto.question.QuestionCreateUpdateRequest
 import com.example.soalpichapi2.dto.question.QuestionDto
 import com.example.soalpichapi2.enumeration.UserRole
+import com.example.soalpichapi2.service.AuthenticationService
 import com.example.soalpichapi2.service.QuestionService
 import jakarta.annotation.security.RolesAllowed
 import jakarta.validation.Valid
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/api/questions")
 class QuestionController(
     private val questionService: QuestionService,
+    private val authenticationService: AuthenticationService,
 ) {
 
     @RolesAllowed(UserRole.DESIGNER_VALUE)
@@ -40,7 +42,12 @@ class QuestionController(
     fun get(@PathVariable id: Long): ResponseEntity<QuestionDto> {
         val question = questionService.getById(id)
         return question?.let {
-            ResponseEntity.ok(it)
+            val user = authenticationService.getCurrentUser()!!
+            if (user.role == UserRole.PLAYER) {
+                ResponseEntity.ok(it.copy(answer = 0))
+            } else {
+                ResponseEntity.ok(it)
+            }
         } ?: ResponseEntity.notFound().build()
     }
 

@@ -8,6 +8,7 @@ import org.springframework.context.MessageSource
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.http.converter.HttpMessageNotReadableException
+import org.springframework.security.authorization.AuthorizationDeniedException
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
@@ -49,6 +50,16 @@ class GlobalExceptionHandler(private val messageSource: MessageSource) {
     fun handleValidationException(ex: ValidationException): ResponseEntity<ErrorResponse> {
         val errorResponse = ErrorResponse(getMessage(ex.message) ?: getMessage("error.bad-request")!!, listOf())
         return ResponseEntity(errorResponse, HttpStatus.BAD_REQUEST)
+    }
+
+    @ExceptionHandler(AuthorizationDeniedException::class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    fun handleAuthorizationDeniedException(ex: AuthorizationDeniedException): ResponseEntity<ErrorResponse> {
+        val errorResponse = ErrorResponse(
+            message = ex.message ?: getMessage("error.access-denied")!!,
+            errors = listOf(),
+        )
+        return ResponseEntity(errorResponse, HttpStatus.FORBIDDEN)
     }
 
     @ExceptionHandler(Exception::class)
