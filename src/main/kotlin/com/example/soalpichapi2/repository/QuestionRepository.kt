@@ -30,24 +30,28 @@ interface QuestionRepository : BaseRepository<Question, Long> {
         """
             SELECT q FROM Question q 
             WHERE (:title IS NULL OR q.title ILIKE CONCAT('%', :title, '%')) 
-                AND (:category IS NULL OR q.category.id = :category)
-        """
-    )
-    fun findAllByTitleAndCategory(
-        title: String?,
-        category: Int?
-    ): List<Question>
-
-    @Query(
-        """
-            SELECT q FROM Question q 
-            WHERE (:title IS NULL OR q.title ILIKE CONCAT('%', :title, '%')) 
+                AND (:createdBy IS NULL OR q.createdBy in :createdBy)
                 AND (:category IS NULL OR q.category.id = :category)
         """
     )
     fun findAllByTitleAndCategory(
         title: String?,
         category: Int?,
+        createdBy: List<String>?,
+    ): List<Question>
+
+    @Query(
+        """
+            SELECT q FROM Question q 
+            WHERE (:title IS NULL OR q.title ILIKE CONCAT('%', :title, '%')) 
+                AND (:createdBy IS NULL OR q.createdBy in :createdBy)
+                AND (:category IS NULL OR q.category.id = :category)
+        """
+    )
+    fun findAllByTitleAndCategory(
+        title: String?,
+        category: Int?,
+        createdBy: List<String>?,
         pageable: Pageable,
     ): Page<Question>
 }

@@ -92,9 +92,10 @@ class QuestionController(
         @RequestParam(required = false) direction: Direction = Direction.ASC,
         @RequestParam(required = false) title: String? = null,
         @RequestParam(required = false) category: Int? = null,
+        @RequestParam(required = false) createdBy: List<String> = listOf(),
     ): ResponseEntity<Iterable<QuestionDto>> {
         val questions = if (page == null) {
-            questionService.list(title, category)
+            questionService.list(title, category, createdBy)
         } else {
             val request = if (order != null) {
                 PageRequest.of(
@@ -108,7 +109,7 @@ class QuestionController(
                     pageSize,
                 )
             }
-            questionService.listWithPage(title, category, request)
+            questionService.listWithPage(title, category, createdBy, request)
         }
         return ResponseEntity.ok(questions)
     }
