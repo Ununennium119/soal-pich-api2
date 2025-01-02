@@ -10,11 +10,13 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Import
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
+import org.springframework.data.web.config.EnableSpringDataWebSupport
 
 @Configuration
 @EnableJpaAuditing
 @EntityScan(basePackageClasses = [BaseModel::class])
 @EnableJpaRepositories(basePackageClasses = [BaseRepository::class])
+@EnableSpringDataWebSupport(pageSerializationMode = EnableSpringDataWebSupport.PageSerializationMode.VIA_DTO)
 @Import(
     WebSecurityConfig::class,
     MessageSourceConfig::class,

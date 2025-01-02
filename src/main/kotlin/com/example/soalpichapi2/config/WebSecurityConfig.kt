@@ -1,6 +1,7 @@
 package com.example.soalpichapi2.config
 
 import com.example.soalpichapi2.filter.JwtAuthenticationFilter
+import jakarta.servlet.http.HttpServletResponse
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpMethod
@@ -37,9 +38,19 @@ class WebSecurityConfig(private val jwtAuthenticationFilter: JwtAuthenticationFi
                     // Other APIs
                     .anyRequest().authenticated()
             }
+            .logout {
+                it.logoutUrl("/api/auth/logout")
+                it.logoutSuccessHandler { _, response, _ ->
+                    response.status = HttpServletResponse.SC_NO_CONTENT
+                }
+                it.invalidateHttpSession(true)
+                it.clearAuthentication(true)
+                it.permitAll()
+            }
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
             .httpBasic(withDefaults())
             .csrf { it.disable() }
+            .cors(withDefaults())
         return http.build()
     }
 
