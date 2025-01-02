@@ -35,12 +35,16 @@ class AuthenticationService(
     }
 
     fun authenticate(request: LoginRequest): UserDto {
-        authenticationManager.authenticate(
-            UsernamePasswordAuthenticationToken(
-                request.username,
-                request.password,
+        try {
+            authenticationManager.authenticate(
+                UsernamePasswordAuthenticationToken(
+                    request.username,
+                    request.password,
+                )
             )
-        )
+        } catch (e: Exception) {
+            throw ValidationException("authentication.invalid")
+        }
         return userRepository.findByUsername(request.username)?.toDto()
             ?: throw UsernameNotFoundException("")
     }

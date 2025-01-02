@@ -13,6 +13,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.ResponseStatus
+import org.springframework.web.servlet.resource.NoResourceFoundException
 import java.util.*
 
 @ControllerAdvice
@@ -60,6 +61,12 @@ class GlobalExceptionHandler(private val messageSource: MessageSource) {
             errors = listOf(),
         )
         return ResponseEntity(errorResponse, HttpStatus.FORBIDDEN)
+    }
+
+    @ExceptionHandler(NoResourceFoundException::class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    fun handleNoResourceFoundException(ex: NoResourceFoundException): ResponseEntity<Unit> {
+        return ResponseEntity.notFound().build()
     }
 
     @ExceptionHandler(Exception::class)

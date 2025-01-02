@@ -119,8 +119,13 @@ class QuestionController(
     fun random(@RequestParam(required = false) category: Long? = null): ResponseEntity<QuestionDto> {
         val question = questionService.getRandomUnansweredQuestion(category)
         return question?.let {
-            ResponseEntity.ok(it)
-        } ?: ResponseEntity.notFound().build()
+            val user = authenticationService.getCurrentUser()!!
+            if (user.role == UserRole.PLAYER) {
+                ResponseEntity.ok(it.copy(answer = 0))
+            } else {
+                ResponseEntity.ok(it)
+            }
+        } ?: ResponseEntity.ok().build()
     }
 
     @RolesAllowed(UserRole.PLAYER_VALUE)

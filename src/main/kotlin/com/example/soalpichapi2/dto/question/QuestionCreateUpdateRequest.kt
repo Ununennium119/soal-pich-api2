@@ -17,19 +17,19 @@ data class QuestionCreateUpdateRequest(
     val question: String,
 
     @field:NotBlank(message = "question.option.empty")
-    @field:Size(min = 3, max = 128, message = "question.option.size")
+    @field:Size(min = 1, max = 128, message = "question.option.size")
     val option1: String,
 
     @field:NotBlank(message = "question.option.empty")
-    @field:Size(min = 3, max = 128, message = "question.option.size")
+    @field:Size(min = 1, max = 128, message = "question.option.size")
     val option2: String,
 
     @field:NotBlank(message = "question.option.empty")
-    @field:Size(min = 3, max = 128, message = "question.option.size")
+    @field:Size(min = 1, max = 128, message = "question.option.size")
     val option3: String,
 
     @field:NotBlank(message = "question.option.empty")
-    @field:Size(min = 3, max = 128, message = "question.option.size")
+    @field:Size(min = 1, max = 128, message = "question.option.size")
     val option4: String,
 
     @field:NotNull(message = "question.answer.null")

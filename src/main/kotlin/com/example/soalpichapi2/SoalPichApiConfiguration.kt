@@ -1,6 +1,7 @@
 package com.example.soalpichapi2
 
 import com.example.soalpichapi2.config.MessageSourceConfig
+import com.example.soalpichapi2.config.WebMvcConfig
 import com.example.soalpichapi2.config.WebSecurityConfig
 import com.example.soalpichapi2.model.BaseModel
 import com.example.soalpichapi2.repository.BaseRepository
@@ -17,5 +18,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 @Import(
     WebSecurityConfig::class,
     MessageSourceConfig::class,
+    WebMvcConfig::class,
 )
 class SoalPichApiConfiguration

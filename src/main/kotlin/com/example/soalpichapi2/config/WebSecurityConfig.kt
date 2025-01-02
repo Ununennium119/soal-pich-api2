@@ -3,6 +3,7 @@ package com.example.soalpichapi2.config
 import com.example.soalpichapi2.filter.JwtAuthenticationFilter
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.http.HttpMethod
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.config.Customizer.withDefaults
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
@@ -25,6 +26,7 @@ class WebSecurityConfig(private val jwtAuthenticationFilter: JwtAuthenticationFi
         http
             .authorizeHttpRequests { requests ->
                 requests
+                    .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                     .requestMatchers("/api/auth/**").permitAll()
                     // Category
                     .requestMatchers("/api/categories").authenticated()
@@ -33,7 +35,6 @@ class WebSecurityConfig(private val jwtAuthenticationFilter: JwtAuthenticationFi
                     .requestMatchers("/api/questions").authenticated()
                     .requestMatchers("/api/questions/**").authenticated()
                     // Other APIs
-                    .requestMatchers("/api/**").authenticated()
                     .anyRequest().authenticated()
             }
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
