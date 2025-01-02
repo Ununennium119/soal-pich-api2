@@ -82,9 +82,10 @@ class CategoryController(
         @RequestParam(required = false) pageSize: Int = 10,
         @RequestParam(required = false) order: String? = null,
         @RequestParam(required = false) direction: Direction = Direction.ASC,
+        @RequestParam(required = false) title: String? = null,
     ): ResponseEntity<Iterable<CategoryDto>> {
         return if (page == null) {
-            val categories = categoryService.list()
+            val categories = categoryService.list(title)
             ResponseEntity.ok(categories)
         } else {
             val request = if (order != null) {
@@ -99,7 +100,7 @@ class CategoryController(
                     pageSize,
                 )
             }
-            val categories = categoryService.listWithPage(request)
+            val categories = categoryService.listWithPage(request, title)
             ResponseEntity.ok(categories)
         }
     }

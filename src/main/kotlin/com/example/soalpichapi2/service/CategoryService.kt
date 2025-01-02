@@ -54,11 +54,19 @@ class CategoryService(
         return true
     }
 
-    fun list(): List<CategoryDto> {
-        return categoryRepository.findAll().map { it.toDto() }
+    fun list(title: String?): List<CategoryDto> {
+        return if (title.isNullOrBlank()) {
+            categoryRepository.findAll()
+        } else {
+            categoryRepository.findAllByTitleLikeIgnoreCase("%$title%")
+        }.map { it.toDto() }
     }
 
-    fun listWithPage(request: PageRequest): Page<CategoryDto> {
-        return categoryRepository.findAll(request).map { it.toDto() }
+    fun listWithPage(request: PageRequest, title: String?): Page<CategoryDto> {
+        return if (title.isNullOrBlank()) {
+            categoryRepository.findAll(request)
+        } else {
+            categoryRepository.findAllByTitleLikeIgnoreCase("%$title%", request)
+        }.map { it.toDto() }
     }
 }
