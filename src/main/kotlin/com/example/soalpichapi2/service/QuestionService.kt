@@ -82,12 +82,12 @@ class QuestionService(
         return true
     }
 
-    fun list(): List<QuestionDto> {
-        return questionRepository.findAll().map { it.toDto() }
+    fun list(title: String?, category: Int?): List<QuestionDto> {
+        return questionRepository.findAllByTitleAndCategory(title, category).map { it.toDto() }
     }
 
-    fun listWithPage(request: PageRequest): Page<QuestionDto> {
-        return questionRepository.findAll(request).map { it.toDto() }
+    fun listWithPage(title: String?, category: Int?, request: PageRequest): Page<QuestionDto> {
+        return questionRepository.findAllByTitleAndCategory(title, category, request).map { it.toDto() }
     }
 
     fun getRandomUnansweredQuestion(categoryId: Long? = null): QuestionDto? {
