@@ -16,6 +16,9 @@ class User(
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private val role: UserRole = UserRole.PLAYER,
+
+    @OneToMany(fetch = FetchType.EAGER)
+    private val following: MutableSet<User> = mutableSetOf()
 ) : BaseModel() {
     protected constructor() : this("", "", UserRole.PLAYER)
 
@@ -25,8 +28,13 @@ class User(
             username = username,
             password = password,
             role = role,
+            following = following.map { it.username }.toSet(),
             createdDate = createdDate,
             modifiedDate = modifiedDate,
         )
+    }
+
+    fun addFollowing(user: User) {
+        this.following.add(user)
     }
 }

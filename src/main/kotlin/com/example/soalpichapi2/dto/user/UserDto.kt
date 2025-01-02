@@ -13,8 +13,9 @@ class UserDto(
     private val username: String,
     private val password: String,
     val role: UserRole,
+    val following: Set<String>,
     val createdDate: LocalDateTime? = null,
-    val modifiedDate: LocalDateTime? = null
+    val modifiedDate: LocalDateTime? = null,
 ) : UserDetails {
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
         return mutableListOf(SimpleGrantedAuthority(role.getAuthority()))

@@ -35,6 +35,9 @@ class WebSecurityConfig(private val jwtAuthenticationFilter: JwtAuthenticationFi
                     // Question
                     .requestMatchers("/api/questions").authenticated()
                     .requestMatchers("/api/questions/**").authenticated()
+                    // User
+                    .requestMatchers("/api/users").authenticated()
+                    .requestMatchers("/api/users/**").authenticated()
                     // Other APIs
                     .anyRequest().authenticated()
             }
