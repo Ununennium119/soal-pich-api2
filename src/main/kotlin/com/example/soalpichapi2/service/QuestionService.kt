@@ -83,8 +83,11 @@ class QuestionService(
     }
 
     fun list(title: String?, category: Int?, createdBy: List<String>): List<QuestionDto> {
-        return questionRepository.findAllByTitleAndCategory(title, category, createdBy.ifEmpty { null })
-            .map { it.toDto() }
+        return questionRepository.findAllByTitleAndCategory(
+            title?.let { "%$title%" },
+            category,
+            createdBy.ifEmpty { null }
+        ).map { it.toDto() }
     }
 
     fun listWithPage(
@@ -94,7 +97,7 @@ class QuestionService(
         request: PageRequest,
     ): Page<QuestionDto> {
         return questionRepository.findAllByTitleAndCategory(
-            title,
+            title?.let { "%$title%" },
             category,
             createdBy.ifEmpty { null },
             request,

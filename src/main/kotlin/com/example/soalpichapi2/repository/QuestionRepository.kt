@@ -29,7 +29,7 @@ interface QuestionRepository : BaseRepository<Question, Long> {
     @Query(
         """
             SELECT q FROM Question q 
-            WHERE (:title IS NULL OR q.title ILIKE CONCAT('%', :title, '%')) 
+            WHERE (:title IS NULL OR q.title ILIKE :title) 
                 AND (:createdBy IS NULL OR q.createdBy in :createdBy)
                 AND (:category IS NULL OR q.category.id = :category)
         """
@@ -43,7 +43,7 @@ interface QuestionRepository : BaseRepository<Question, Long> {
     @Query(
         """
             SELECT q FROM Question q 
-            WHERE (:title IS NULL OR q.title ILIKE CONCAT('%', :title, '%')) 
+            WHERE (:title IS NULL OR q.title ILIKE :title) 
                 AND (:createdBy IS NULL OR q.createdBy in :createdBy)
                 AND (:category IS NULL OR q.category.id = :category)
         """
