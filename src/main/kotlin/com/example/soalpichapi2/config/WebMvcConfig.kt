@@ -12,7 +12,7 @@ class WebMvcConfig : WebMvcConfigurer {
             .addMapping("/api/**")
             .allowedHeaders("Authorization", "Content-Type", "Accept")
             .allowedMethods("GET", "POST", "PUT", "DELETE")
-            .allowedOrigins("http://localhost:5173", "https://human01d.top", "http://localhost:3000")
+            .allowedOrigins("http://localhost", "https://human01d.top")
             .allowCredentials(true)
     }
 }
