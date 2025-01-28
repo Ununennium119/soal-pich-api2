@@ -13,6 +13,7 @@ class WebMvcConfig : WebMvcConfigurer {
             .allowedHeaders("Authorization", "Content-Type", "Accept")
             .allowedMethods("GET", "POST", "PUT", "DELETE")
             .allowedOrigins("http://localhost", "https://human01d.top")
+            .allowedOriginPatterns("http://localhost:*", "https://human01d.top")
             .allowCredentials(true)
     }
 }
